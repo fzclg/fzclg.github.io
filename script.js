@@ -43,7 +43,49 @@
     img.addEventListener('error', function () { img.style.display = 'none'; });
   });
 
-  // Footer year
-  var y = document.getElementById('year');
-  if (y) y.textContent = new Date().getFullYear();
+  // Effects
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Scroll progress bar
+  var bar = document.createElement('div');
+  bar.className = 'progress';
+  bar.setAttribute('aria-hidden', 'true');
+  document.body.prepend(bar);
+  function progress() {
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.transform = 'scaleX(' + (h > 0 ? window.scrollY / h : 0) + ')';
+  }
+  window.addEventListener('scroll', progress, { passive: true });
+  progress();
+
+  if (!reduce && 'IntersectionObserver' in window) {
+    // Reveal on scroll, staggered inside each group
+    document.documentElement.classList.add('js');
+    var groups = document.querySelectorAll('.about, .grid, .links, .chips, .contact, .facts, .section > .wrap');
+    var seen = new Set();
+    groups.forEach(function (g) {
+      var items = g.matches('.about, .contact, .section > .wrap') ? g.children : g.querySelectorAll(':scope > *');
+      Array.prototype.forEach.call(items, function (el, i) {
+        if (seen.has(el)) return;
+        seen.add(el);
+        el.classList.add('reveal');
+        el.style.transitionDelay = Math.min(i, 5) * 90 + 'ms';
+      });
+    });
+    var rio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('in'); rio.unobserve(en.target); }
+      });
+    }, { threshold: 0.12 });
+    seen.forEach(function (el) { rio.observe(el); });
+
+    // Pointer spotlight on cards and profile links
+    document.querySelectorAll('.card, .links a').forEach(function (el) {
+      el.addEventListener('pointermove', function (e) {
+        var r = el.getBoundingClientRect();
+        el.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        el.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      });
+    });
+  }
 })();

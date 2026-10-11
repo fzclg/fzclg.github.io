@@ -113,3 +113,29 @@ h3{font:700 1.25rem/1.3 var(--head);margin-bottom:.3rem}
   html{scroll-behavior:auto}
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
+
+/* effects */
+.progress{position:fixed;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--sun));transform:scaleX(0);transform-origin:0 50%;z-index:30}
+.portrait img{object-position:50% 15%}
+.hero-inner>*{animation:heroIn .7s cubic-bezier(.2,.7,.2,1) both}
+.hero-inner>:nth-child(2){animation-delay:.1s}
+.hero-inner>:nth-child(3){animation-delay:.2s}
+.hero-inner>:nth-child(4){animation-delay:.3s}
+@keyframes heroIn{from{opacity:0;transform:translateY(22px)}}
+.board{animation:boardIn 1.2s ease-out both,float 9s ease-in-out 1.2s infinite alternate}
+@keyframes float{to{translate:-10px -18px}}
+h1{background:linear-gradient(100deg,var(--ink) 40%,var(--blue) 50%,var(--ink) 60%) 100% 0/250% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:heroIn .7s .1s both,shine 1.6s .8s ease-out forwards}
+@keyframes shine{to{background-position:0 0}}
+.btn{position:relative;overflow:hidden}
+.btn::before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.35) 50%,transparent 65%);transform:translateX(-120%);transition:transform .6s}
+.btn:hover::before{transform:translateX(120%)}
+.card,.links a{position:relative}
+.card::after,.links a::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .25s;background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),color-mix(in srgb,var(--blue) 18%,transparent),transparent 70%)}
+.card:hover::after,.links a:hover::after{opacity:1}
+.thumb img{transition:transform .5s}
+.card:hover .thumb img{transform:scale(1.06)}
+.chips li{transition:transform .2s,background .2s,color .2s}
+.chips li:hover{transform:translateY(-3px) rotate(-1.5deg);background:var(--sun);color:#10172a}
+.js .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+.js .reveal.in{opacity:1;transform:none}
+.js .card.reveal.in{transition:opacity .7s,transform .2s,box-shadow .2s}
